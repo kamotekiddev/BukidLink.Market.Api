@@ -22,6 +22,7 @@
 
     <ItemGroup>
         <ProjectReference Include="../Market.Domain/Market.Domain.csproj"/>
+        <ProjectReference Include="..\Market.Application\Market.Application.csproj"/>
     </ItemGroup>
 
 </Project>
