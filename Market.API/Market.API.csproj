@@ -8,6 +8,22 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.6"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0"/>
+        <PackageReference Include="Scalar.AspNetCore" Version="2.6.4"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../Market.Application/Market.Application.csproj"/>
+        <ProjectReference Include="../Market.Domain/Market.Domain.csproj"/>
+        <ProjectReference Include="..\Market.Infrastructure\Market.Infrastructure.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Controllers\"/>
     </ItemGroup>
 
 </Project>
