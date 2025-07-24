@@ -28,5 +28,12 @@ namespace Market.API.Controllers
             var res = await _authService.RegisterAsync(dto);
             return Ok(res);
         }
+
+        [HttpGet("refresh")]
+        public async Task<IActionResult> Refresh([FromQuery] string refreshToken)
+        {
+            var res = await _authService.RefreshTokenAsync(refreshToken);
+            return Ok(res);
+        }
     }
 }

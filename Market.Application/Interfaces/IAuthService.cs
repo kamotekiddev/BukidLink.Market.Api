@@ -4,6 +4,7 @@ namespace Market.Application.Interfaces;
 
 public interface IAuthService
 {
-    Task<RegisterResponseDto> RegisterAsync(RegisterDto dto);
-    Task<LoginResponseDto> LoginAsync(LoginDto dto);
+    Task<AuthResponse> RegisterAsync(RegisterDto dto);
+    Task<AuthResponse> LoginAsync(LoginDto dto);
+    Task<AuthResponse> RefreshTokenAsync(string refreshToken);
 }

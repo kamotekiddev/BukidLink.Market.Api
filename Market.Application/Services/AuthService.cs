@@ -2,6 +2,7 @@ using Market.Application.DTOs;
 using Market.Application.Interfaces;
 using Market.Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace Market.Application.Services;
 
@@ -11,17 +12,19 @@ public class AuthService : IAuthService
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly JwtService _jwtService;
     private readonly PasswordService _passwordService;
+    public readonly IConfiguration _configuration;
 
     public AuthService(IUserRepository userRepository, JwtService jwtService,
-        IRefreshTokenRepository refreshTokenRepository, PasswordService passwordService)
+        IRefreshTokenRepository refreshTokenRepository, PasswordService passwordService, IConfiguration configuration)
     {
         _userRepository = userRepository;
         _jwtService = jwtService;
         _refreshTokenRepository = refreshTokenRepository;
         _passwordService = passwordService;
+        _configuration = configuration;
     }
 
-    public async Task<RegisterResponseDto> RegisterAsync(RegisterDto dto)
+    public async Task<AuthResponse> RegisterAsync(RegisterDto dto)
     {
         var existingUser = await _userRepository.FindUserByEmail(dto.Email);
         if (existingUser is not null) throw new BadHttpRequestException("Email is already taken.");
@@ -42,14 +45,14 @@ public class AuthService : IAuthService
         await _refreshTokenRepository.SaveTokenAsync(refreshToken);
 
 
-        return new RegisterResponseDto()
+        return new AuthResponse()
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken.Token
         };
     }
 
-    public async Task<LoginResponseDto> LoginAsync(LoginDto dto)
+    public async Task<AuthResponse> LoginAsync(LoginDto dto)
     {
         var user = await _userRepository.FindUserByEmail(dto.Email);
         if (user is null) throw new BadHttpRequestException("User with given email does not exist.");
@@ -63,10 +66,30 @@ public class AuthService : IAuthService
 
         await _refreshTokenRepository.SaveTokenAsync(refreshToken);
 
-        return new LoginResponseDto()
+        return new AuthResponse()
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken.Token
+        };
+    }
+
+    public async Task<AuthResponse> RefreshTokenAsync(string refreshToken)
+    {
+        var existingRefreshToken = await _refreshTokenRepository.FindTokenAsync(refreshToken);
+
+        var accessToken = _jwtService.GenerateAccessToken(existingRefreshToken.User!);
+        var newRefreshToken = _jwtService.GenerateRefreshToken(existingRefreshToken.UserId);
+
+        existingRefreshToken.Token = newRefreshToken.Token;
+        existingRefreshToken.Expiry =
+            DateTime.UtcNow.AddDays(_configuration.GetValue<int>("Jwt:RefreshTokenExpiryDays"));
+
+        await _refreshTokenRepository.UpdateTokenAsync(existingRefreshToken);
+
+        return new AuthResponse()
+        {
+            AccessToken = accessToken,
+            RefreshToken = newRefreshToken.Token,
         };
     }
 }
