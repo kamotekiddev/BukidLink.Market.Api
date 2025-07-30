@@ -2,13 +2,9 @@ using Market.Application.DTOs;
 
 namespace Market.Application.Interfaces;
 
-public class RegisterResponse
-{
-    public string AccessToken { get; set; }
-    public string RefreshToken { get; set; }
-}
-
 public interface IAuthService
 {
-    Task<RegisterResponse> RegisterAsync(RegisterDto dto);
+    Task<AuthResponse> RegisterAsync(RegisterDto dto);
+    Task<AuthResponse> LoginAsync(LoginDto dto);
+    Task<AuthResponse> RefreshTokenAsync(string refreshToken);
 }

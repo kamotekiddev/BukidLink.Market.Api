@@ -1,8 +1,9 @@
+using System;
 using Market.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Market.Infrastructure.Configuration;
+namespace Market.Intrastructure.Configuration;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {

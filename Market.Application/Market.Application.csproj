@@ -4,14 +4,17 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <UserSecretsId>d98878f5-2143-4a43-9da9-4159618cb119</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.7"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.7"/>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.7"/>
     </ItemGroup>
-
     <ItemGroup>
-        <ProjectReference Include="..\Market.Infrastructure\Market.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Market.Domain\Market.Domain.csproj"/>
     </ItemGroup>
 
 </Project>

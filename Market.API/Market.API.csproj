@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.7"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.6"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
             <PrivateAssets>all</PrivateAssets>
@@ -20,10 +21,6 @@
         <ProjectReference Include="../Market.Application/Market.Application.csproj"/>
         <ProjectReference Include="../Market.Domain/Market.Domain.csproj"/>
         <ProjectReference Include="..\Market.Infrastructure\Market.Infrastructure.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Controllers\"/>
     </ItemGroup>
 
 </Project>
