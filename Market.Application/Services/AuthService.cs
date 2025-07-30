@@ -12,16 +12,21 @@ public class AuthService : IAuthService
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly JwtService _jwtService;
     private readonly PasswordService _passwordService;
-    public readonly IConfiguration _configuration;
+    private readonly IUserRolesRepository _userRolesRepository;
+    private readonly IConfiguration _configuration;
+    private readonly IRoleService _roleService;
 
     public AuthService(IUserRepository userRepository, JwtService jwtService,
-        IRefreshTokenRepository refreshTokenRepository, PasswordService passwordService, IConfiguration configuration)
+        IRefreshTokenRepository refreshTokenRepository, PasswordService passwordService, IConfiguration configuration,
+        IRoleService roleService, IUserRolesRepository userRolesRepository)
     {
         _userRepository = userRepository;
         _jwtService = jwtService;
         _refreshTokenRepository = refreshTokenRepository;
         _passwordService = passwordService;
         _configuration = configuration;
+        _roleService = roleService;
+        _userRolesRepository = userRolesRepository;
     }
 
     public async Task<AuthResponse> RegisterAsync(RegisterDto dto)
@@ -37,7 +42,11 @@ public class AuthService : IAuthService
             Password = _passwordService.HashPassword(dto.Password)
         };
 
+        var existingRole = (await _roleService.GetAllRolesAsync()).FirstOrDefault(role => role.Name == dto.Role);
+        if (existingRole is null) throw new BadHttpRequestException("Role does not exist.");
+
         await _userRepository.SaveUserAsync(user);
+        await _userRolesRepository.AddUserRole(new UserRole() { RoleId = existingRole.Id, UserId = user.Id });
 
         var accessToken = _jwtService.GenerateAccessToken(user);
         var refreshToken = _jwtService.GenerateRefreshToken(user.Id);
