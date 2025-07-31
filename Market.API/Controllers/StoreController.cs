@@ -1,7 +1,5 @@
-using Market.Application.DTOs;
 using Market.Application.DTOs.Store;
 using Market.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Market.API.Controllers
@@ -17,6 +15,19 @@ namespace Market.API.Controllers
             _storeService = storeService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllStores()
+        {
+            var stores = await _storeService.GetAllStoreAsync();
+            return Ok(stores);
+        }
+
+        [HttpGet("{storeId:guid}")]
+        public async Task<IActionResult> GetStoreById([FromRoute] Guid storeId)
+        {
+            var stores = await _storeService.GetStoreByIdAsync(storeId);
+            return Ok(stores);
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddStore([FromBody] AddStoreDto dto)

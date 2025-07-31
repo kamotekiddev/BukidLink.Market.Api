@@ -8,4 +8,6 @@ public interface IStoreService
     Task<StoreDto> AddStoreAsync(AddStoreDto dto);
     Task<StoreDto> UpdateStoreAsync(Guid storeId, UpdateStoreDto dto);
     Task<StoreDto> RemoveStoreAsync(Guid storeId);
+    Task<StoreDto> GetStoreByIdAsync(Guid storeId);
+    Task<List<StoreDto>> GetAllStoreAsync();
 }

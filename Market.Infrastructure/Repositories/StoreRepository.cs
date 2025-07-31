@@ -46,4 +46,9 @@ public class StoreRepository : IStoreRepository
     {
         return await _dbContext.Stores.FirstOrDefaultAsync(s => string.Equals(s.Name, name));
     }
+
+    public async Task<List<Store>> GetAllStoresAsync()
+    {
+        return await _dbContext.Stores.ToListAsync();
+    }
 }

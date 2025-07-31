@@ -58,4 +58,18 @@ public class StoreService : IStoreService
         await _storeRepository.DeleteStoreAsync(existingStore.Id);
         return _mapper.Map<StoreDto>(existingStore);
     }
+
+    public async Task<StoreDto> GetStoreByIdAsync(Guid storeId)
+    {
+        var store = await _storeRepository.FindStoreByIdAsync(storeId) ??
+                    throw new BadHttpRequestException("Store does not exist.");
+
+        return _mapper.Map<StoreDto>(store);
+    }
+
+    public async Task<List<StoreDto>> GetAllStoreAsync()
+    {
+        var stores = await _storeRepository.GetAllStoresAsync();
+        return _mapper.Map<List<StoreDto>>(stores);
+    }
 }
