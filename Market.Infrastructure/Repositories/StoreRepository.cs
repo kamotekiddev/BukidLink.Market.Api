@@ -30,7 +30,9 @@ public class StoreRepository : IStoreRepository
 
     public async Task<Store?> FindStoreByIdAsync(Guid storeId)
     {
-        return await _dbContext.Stores.FindAsync(storeId);
+        return await _dbContext.Stores
+            .Include(s => s.Owner)
+            .FirstOrDefaultAsync(s => s.Id == storeId);
     }
 
     public async Task<Store?> DeleteStoreAsync(Guid storeId)

@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using AutoMapper;
 using Market.Application.DTOs.User;
 using Market.Application.Interfaces;
 using Market.Domain.Entities;
@@ -12,14 +13,16 @@ public class UserService : IUserService
     private readonly IUserRolesRepository _userRolesRepository;
     private readonly IRoleRepository _roleRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IMapper _mapper;
 
     public UserService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor,
-        IUserRolesRepository userRolesRepository, IRoleRepository roleRepository)
+        IUserRolesRepository userRolesRepository, IRoleRepository roleRepository, IMapper mapper)
     {
         _userRepository = userRepository;
         _httpContextAccessor = httpContextAccessor;
         _userRolesRepository = userRolesRepository;
         _roleRepository = roleRepository;
+        _mapper = mapper;
     }
 
     public async Task<UserDto> CreateUserAsync(AddUserDto dto)
@@ -36,14 +39,7 @@ public class UserService : IUserService
 
         await _userRepository.SaveUserAsync(user);
 
-        return new UserDto()
-        {
-            Id = user.Id,
-            Email = user.Email,
-            Name = user.Name,
-            Password = user.Password,
-            IsEmailVerified = user.IsEmailVerified
-        };
+        return _mapper.Map<UserDto>(user);
     }
 
     public async Task<UserDto> UpdateUserAsync(Guid userId, UpdateUserDto dto)
@@ -55,14 +51,7 @@ public class UserService : IUserService
 
         await _userRepository.UpdateUserAsync(existingUser);
 
-        return new UserDto()
-        {
-            Id = existingUser.Id,
-            Email = existingUser.Email,
-            Name = existingUser.Name,
-            Password = existingUser.Password,
-            IsEmailVerified = existingUser.IsEmailVerified
-        };
+        return _mapper.Map<UserDto>(existingUser);
     }
 
     public async Task<UserDto> AssignRoleToUserAsync(Guid userId, Guid roleId)
@@ -79,14 +68,7 @@ public class UserService : IUserService
             RoleId = role.Id
         });
 
-        return new UserDto()
-        {
-            Id = user.Id,
-            Email = user.Email,
-            Name = user.Name,
-            Password = user.Password,
-            IsEmailVerified = user.IsEmailVerified
-        };
+        return _mapper.Map<UserDto>(user);
     }
 
     public async Task<UserDto> GetUserByEmailAsync(string email)
@@ -94,14 +76,7 @@ public class UserService : IUserService
         var user = await _userRepository.FindUserByEmailAsync(email) ??
                    throw new KeyNotFoundException("User not found.");
 
-        return new UserDto()
-        {
-            Id = user.Id,
-            Email = user.Email,
-            Name = user.Name,
-            Password = user.Password,
-            IsEmailVerified = user.IsEmailVerified
-        };
+        return _mapper.Map<UserDto>(user);
     }
 
     public async Task<UserDto> GetCurrentUser()

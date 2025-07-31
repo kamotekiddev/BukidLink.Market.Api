@@ -28,8 +28,14 @@ public class StoreService : IStoreService
         if (existingStore is not null)
             throw new BadHttpRequestException("Store is already taken");
 
-        var store = _mapper.Map<Store>(dto);
-        store.OwnerId = user.Id;
+        var store = new Store()
+        {
+            Name = dto.Name,
+            CoverPhotoUrl = dto.CoverPhotoUrl,
+            ProfilePhotoUrl = dto.ProfilePhotoUrl,
+            Description = dto.Description,
+            OwnerId = user.Id,
+        };
 
         await _storeRepository.CreateStoreAsync(store);
 

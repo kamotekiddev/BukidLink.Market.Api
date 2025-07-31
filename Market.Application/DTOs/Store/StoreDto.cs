@@ -1,3 +1,5 @@
+using Market.Application.DTOs.User;
+
 namespace Market.Application.DTOs.Store;
 
 public class StoreDto
@@ -8,4 +10,5 @@ public class StoreDto
     public string? CoverPhotoUrl { get; set; }
     public string? ProfilePhotoUrl { get; set; }
     public Guid OwnerId { get; set; }
+    public UserDto? Owner { get; set; }
 }
