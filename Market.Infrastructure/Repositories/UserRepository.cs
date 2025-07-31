@@ -22,11 +22,24 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task<User?> FindUserByEmail(string email)
+    public async Task<User> UpdateUserAsync(User user)
+    {
+        _dbContext.Users.Update(user);
+        await _dbContext.SaveChangesAsync();
+
+        return user;
+    }
+
+    public async Task<User?> FindUserByEmailAsync(string email)
     {
         var user = await _dbContext.Users
             .FirstOrDefaultAsync(user => string.Equals(user.Email, email));
 
         return user;
+    }
+
+    public async Task<User?> FindUserByIdAsync(Guid userId)
+    {
+        return await _dbContext.Users.FindAsync(userId);
     }
 }

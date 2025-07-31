@@ -1,0 +1,16 @@
+using AutoMapper;
+using Market.Application.DTOs;
+using Market.Application.DTOs.Store;
+using Market.Application.DTOs.User;
+using Market.Domain.Entities;
+
+namespace Market.Application.Mapping;
+
+public class MappingProfile : Profile
+{
+    public MappingProfile()
+    {
+        CreateMap<User, UserDto>();
+        CreateMap<Store, StoreDto>();
+    }
+}

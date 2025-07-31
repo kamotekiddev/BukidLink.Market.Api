@@ -30,6 +30,7 @@ builder.Services.AddAuthentication().AddJwtBearer("Bearer", options =>
     };
 });
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
