@@ -47,10 +47,17 @@ public class StoreService : IStoreService
         var existingStore = await _storeRepository.FindStoreByIdAsync(storeId) ??
                             throw new BadHttpRequestException("Store does not exist.");
 
-        existingStore.Name = dto.Name;
-        existingStore.CoverPhotoUrl = dto.CoverPhotoUrl;
-        existingStore.ProfilePhotoUrl = dto.ProfilePhotoUrl;
-        existingStore.Description = dto.Description;
+        if (!string.IsNullOrWhiteSpace(dto.Name))
+            existingStore.Name = dto.Name;
+
+        if (!string.IsNullOrWhiteSpace(dto.CoverPhotoUrl))
+            existingStore.CoverPhotoUrl = dto.CoverPhotoUrl;
+
+        if (!string.IsNullOrWhiteSpace(dto.ProfilePhotoUrl))
+            existingStore.ProfilePhotoUrl = dto.ProfilePhotoUrl;
+
+        if (!string.IsNullOrWhiteSpace(dto.Description))
+            existingStore.Description = dto.Description;
 
         await _storeRepository.UpdateStoreAsync(existingStore);
         return _mapper.Map<StoreDto>(existingStore);
