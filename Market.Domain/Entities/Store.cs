@@ -10,4 +10,5 @@ public class Store : BaseEntity
 
     public Guid OwnerId { get; set; }
     public User? Owner { get; set; }
+    public List<Produce>? Produce { get; set; }
 }

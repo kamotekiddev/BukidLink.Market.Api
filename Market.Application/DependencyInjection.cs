@@ -16,6 +16,7 @@ public static class DependencyInjection
         services.AddScoped<PasswordService>();
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IStoreService, StoreService>();
+        services.AddScoped<IProduceService, ProduceService>();
         services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
         return services;

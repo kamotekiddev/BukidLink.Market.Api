@@ -14,7 +14,8 @@ public class AppDbContext : DbContext
     public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
-    public DbSet<Store?> Stores { get; set; }
+    public DbSet<Store> Stores { get; set; }
+    public DbSet<Produce> Produce { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -47,6 +48,14 @@ public class AppDbContext : DbContext
         builder.Entity<User>()
             .HasMany(u => u.Stores)
             .WithOne(s => s.Owner);
+
+        builder.Entity<Store>()
+            .HasMany(s => s.Produce)
+            .WithOne(p => p.Store);
+
+        builder.Entity<Produce>()
+            .HasOne(p => p.Store)
+            .WithMany(s => s.Produce);
     }
 
 
