@@ -1,6 +1,5 @@
 using AutoMapper;
 using Market.Application.DTOs.Produce;
-using Market.Application.DTOs.Store;
 using Market.Application.DTOs.User;
 using Market.Domain.Entities;
 
@@ -11,7 +10,6 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<User, UserDto>();
-        CreateMap<Store, StoreDto>();
         CreateMap<Produce, ProduceDto>();
     }
 }

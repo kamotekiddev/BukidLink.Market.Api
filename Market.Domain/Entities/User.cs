@@ -15,5 +15,4 @@ public class User
     public bool IsEmailVerified { get; set; } = false;
 
     public List<UserRole>? UserRoles { get; set; }
-    public List<Store>? Stores { get; set; }
 }

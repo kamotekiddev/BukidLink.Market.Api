@@ -7,5 +7,4 @@ public class ProduceDto
     public string? Description { get; set; }
     public string? PhotoUrl { get; set; }
     public decimal Price { get; set; }
-    public Guid StoreId { get; set; }
 }

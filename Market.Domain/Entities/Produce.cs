@@ -8,6 +8,5 @@ public class Produce : BaseEntity
     public string? PhotoUrl { get; set; }
     public decimal Price { get; set; }
 
-    public Guid StoreId { get; set; }
-    public Store? Store { get; set; }
+    public List<Inventory>? Inventory { get; set; }
 }

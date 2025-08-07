@@ -6,5 +6,4 @@ public class AddProduceDto
     public string? Description { get; set; } = string.Empty;
     public string? PhotoUrl { get; set; } = string.Empty;
     public decimal Price { get; set; }
-    public Guid StoreId { get; set; }
 }

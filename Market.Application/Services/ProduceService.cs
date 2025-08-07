@@ -25,7 +25,6 @@ public class ProduceService : IProduceService
             Description = dto.Description,
             Price = dto.Price,
             PhotoUrl = dto.PhotoUrl,
-            StoreId = dto.StoreId,
         };
 
         await _produceRepository.AddProduceAsync(produce);
