@@ -1,4 +1,5 @@
 using AutoMapper;
+using Market.Application.DTOs.Inventory;
 using Market.Application.DTOs.Produce;
 using Market.Application.DTOs.User;
 using Market.Domain.Entities;
@@ -11,5 +12,6 @@ public class MappingProfile : Profile
     {
         CreateMap<User, UserDto>();
         CreateMap<Produce, ProduceDto>();
+        CreateMap<Inventory, InventoryDto>();
     }
 }

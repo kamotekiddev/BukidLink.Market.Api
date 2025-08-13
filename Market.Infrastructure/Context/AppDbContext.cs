@@ -15,6 +15,7 @@ public class AppDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<Produce> Produce { get; set; }
+    public DbSet<Inventory> Inventory { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)

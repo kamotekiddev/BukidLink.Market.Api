@@ -28,18 +28,28 @@ namespace Market.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int>("BatchNumber")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime?>("DateExpired")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateReceived")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("ProduceId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Sku")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
