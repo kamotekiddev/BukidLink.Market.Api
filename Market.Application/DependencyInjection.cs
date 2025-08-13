@@ -17,6 +17,8 @@ public static class DependencyInjection
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IProduceService, ProduceService>();
         services.AddScoped<IInventoryService, InventoryService>();
+        services.AddScoped<IProduceVariantService, ProduceVariantService>();
+
         services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
         return services;
