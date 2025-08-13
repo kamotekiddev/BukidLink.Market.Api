@@ -7,7 +7,7 @@ public class Inventory : BaseEntity
 {
     public Guid Id { get; set; }
 
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int BatchNumber { get; set; }
 
     public int Quantity { get; set; }

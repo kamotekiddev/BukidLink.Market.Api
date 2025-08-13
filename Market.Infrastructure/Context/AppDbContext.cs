@@ -40,7 +40,6 @@ public class AppDbContext : DbContext
             .WithMany()
             .HasForeignKey(rt => rt.UserId);
 
-
         builder.Entity<Inventory>()
             .HasOne(i => i.Produce)
             .WithMany(p => p.Inventory)
