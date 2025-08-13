@@ -3,6 +3,7 @@ using System;
 using Market.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Market.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250804121545_Add Produce")]
+    partial class AddProduce
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,50 +24,6 @@ namespace Market.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Market.Domain.Entities.Inventory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("BatchNumber")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BatchNumber"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DateExpired")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DateReceived")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("ProduceId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Sku")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProduceId");
-
-                    b.ToTable("Inventory");
-                });
 
             modelBuilder.Entity("Market.Domain.Entities.Produce", b =>
                 {
@@ -88,10 +47,15 @@ namespace Market.Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Produce");
                 });
@@ -132,6 +96,41 @@ namespace Market.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("Market.Domain.Entities.Store", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CoverPhotoUrl")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ProfilePhotoUrl")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Stores");
                 });
 
             modelBuilder.Entity("Market.Domain.Entities.User", b =>
@@ -175,15 +174,15 @@ namespace Market.Infrastructure.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("Market.Domain.Entities.Inventory", b =>
+            modelBuilder.Entity("Market.Domain.Entities.Produce", b =>
                 {
-                    b.HasOne("Market.Domain.Entities.Produce", "Produce")
-                        .WithMany("Inventory")
-                        .HasForeignKey("ProduceId")
+                    b.HasOne("Market.Domain.Entities.Store", "Store")
+                        .WithMany("Produce")
+                        .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Produce");
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("Market.Domain.Entities.RefreshToken", b =>
@@ -195,6 +194,17 @@ namespace Market.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Market.Domain.Entities.Store", b =>
+                {
+                    b.HasOne("Market.Domain.Entities.User", "Owner")
+                        .WithMany("Stores")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Market.Domain.Entities.UserRole", b =>
@@ -216,18 +226,20 @@ namespace Market.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Market.Domain.Entities.Produce", b =>
-                {
-                    b.Navigation("Inventory");
-                });
-
             modelBuilder.Entity("Market.Domain.Entities.Role", b =>
                 {
                     b.Navigation("UserRoles");
                 });
 
+            modelBuilder.Entity("Market.Domain.Entities.Store", b =>
+                {
+                    b.Navigation("Produce");
+                });
+
             modelBuilder.Entity("Market.Domain.Entities.User", b =>
                 {
+                    b.Navigation("Stores");
+
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

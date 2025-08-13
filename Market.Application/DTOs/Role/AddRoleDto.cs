@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Market.Application.Constants;
 
-namespace Market.Application.DTOs;
+namespace Market.Application.DTOs.Role;
 
 public class AddRoleDto
 {

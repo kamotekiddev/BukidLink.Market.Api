@@ -1,4 +1,4 @@
-using Market.Application.DTOs;
+using Market.Application.DTOs.Role;
 using Market.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

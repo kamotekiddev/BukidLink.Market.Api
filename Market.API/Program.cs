@@ -1,4 +1,5 @@
 using System.Text;
+using Market.API.Exceptions;
 using Market.Application;
 using Market.Infrastructure;
 using Market.Infrastructure.Context;
@@ -30,8 +31,9 @@ builder.Services.AddAuthentication().AddJwtBearer("Bearer", options =>
     };
 });
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.Filters.Add<ExceptionFilter>());
 
 var app = builder.Build();
 

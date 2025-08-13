@@ -31,7 +31,7 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponse> RegisterAsync(RegisterDto dto)
     {
-        var existingUser = await _userRepository.FindUserByEmail(dto.Email);
+        var existingUser = await _userRepository.FindUserByEmailAsync(dto.Email);
         if (existingUser is not null) throw new BadHttpRequestException("Email is already taken.");
 
 
@@ -63,7 +63,7 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponse> LoginAsync(LoginDto dto)
     {
-        var user = await _userRepository.FindUserByEmail(dto.Email);
+        var user = await _userRepository.FindUserByEmailAsync(dto.Email);
         if (user is null) throw new BadHttpRequestException("User with given email does not exist.");
 
         var passwordMatched = _passwordService.VerifyPassword(dto.Password, user.Password);

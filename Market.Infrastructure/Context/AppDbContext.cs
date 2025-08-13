@@ -14,6 +14,9 @@ public class AppDbContext : DbContext
     public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<Produce> Produce { get; set; }
+    public DbSet<Inventory> Inventory { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -36,5 +39,36 @@ public class AppDbContext : DbContext
             .HasOne(rt => rt.User)
             .WithMany()
             .HasForeignKey(rt => rt.UserId);
+
+        builder.Entity<Inventory>()
+            .HasOne(i => i.Produce)
+            .WithMany()
+            .HasForeignKey(i => i.ProduceId);
+    }
+
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        UpdateTimestamps();
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void UpdateTimestamps()
+    {
+        var entries = ChangeTracker.Entries()
+            .Where(e => e.Entity is BaseEntity &&
+                        (e.State == EntityState.Added || e.State == EntityState.Modified));
+
+        foreach (var entry in entries)
+        {
+            var entity = (BaseEntity)entry.Entity;
+
+            if (entry.State == EntityState.Added)
+            {
+                entity.CreatedAt = DateTime.UtcNow;
+            }
+
+            entity.UpdatedAt = DateTime.UtcNow;
+        }
     }
 }
