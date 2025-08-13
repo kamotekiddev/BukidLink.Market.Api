@@ -10,5 +10,5 @@ public class AddInventoryDto
     public InventoryStatus Status { get; set; } = InventoryStatus.Pending;
 
     public DateTime DateReceived { get; set; }
-    public DateTime? DateExpired { get; set; }
+    public DateTime DateExpired { get; set; }
 }

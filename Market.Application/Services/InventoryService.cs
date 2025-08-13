@@ -47,7 +47,7 @@ public class InventoryService : IInventoryService
             inventory.Sku = dto.Sku;
 
         if (dto.DateExpired != null)
-            inventory.DateExpired = dto.DateExpired;
+            inventory.DateExpired = (DateTime)dto.DateExpired;
 
         if (dto.DateReceived != null)
             inventory.DateReceived = (DateTime)dto.DateReceived;

@@ -42,7 +42,7 @@ public class AppDbContext : DbContext
 
         builder.Entity<Inventory>()
             .HasOne(i => i.Produce)
-            .WithMany(p => p.Inventory)
+            .WithMany()
             .HasForeignKey(i => i.ProduceId);
     }
 

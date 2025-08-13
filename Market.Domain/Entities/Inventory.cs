@@ -13,7 +13,7 @@ public class Inventory : BaseEntity
     public int Quantity { get; set; }
     public string Sku { get; set; } = string.Empty;
     public DateTime DateReceived { get; set; }
-    public DateTime? DateExpired { get; set; }
+    public DateTime DateExpired { get; set; }
     public InventoryStatus Status { get; set; } = InventoryStatus.Pending;
 
     public Guid ProduceId { get; set; }
