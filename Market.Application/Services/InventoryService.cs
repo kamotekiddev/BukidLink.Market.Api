@@ -2,6 +2,7 @@ using AutoMapper;
 using Market.Application.DTOs.Inventory;
 using Market.Application.Interfaces;
 using Market.Domain.Entities;
+using Market.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 
 namespace Market.Application.Services;
@@ -39,10 +40,20 @@ public class InventoryService : IInventoryService
         var inventory = await _repository.FindInventoryByIdAsync(id) ??
                         throw new BadHttpRequestException("Inventory does not exist.");
 
-        inventory.Quantity = dto.Quantity;
-        inventory.Sku = dto.Sku;
-        inventory.DateExpired = dto.DateExpired;
-        inventory.DateReceived = dto.DateReceived;
+        if (dto.Quantity != null)
+            inventory.Quantity = (int)dto.Quantity;
+
+        if (dto.Sku != null)
+            inventory.Sku = dto.Sku;
+
+        if (dto.DateExpired != null)
+            inventory.DateExpired = dto.DateExpired;
+
+        if (dto.DateReceived != null)
+            inventory.DateReceived = (DateTime)dto.DateReceived;
+
+        if (dto.Status != null)
+            inventory.Status = (InventoryStatus)dto.Status;
 
         await _repository.UpdateInventoryAsync(inventory);
         return _mapper.Map<InventoryDto>(inventory);
