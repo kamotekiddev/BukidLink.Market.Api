@@ -15,6 +15,7 @@ public class AppDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<Produce> Produce { get; set; }
+    public DbSet<ProduceVariant> ProduceVariants { get; set; }
     public DbSet<Inventory> Inventory { get; set; }
 
 
@@ -39,6 +40,11 @@ public class AppDbContext : DbContext
             .HasOne(rt => rt.User)
             .WithMany()
             .HasForeignKey(rt => rt.UserId);
+
+        builder.Entity<Produce>()
+            .HasMany(p => p.Variants)
+            .WithOne(v => v.Produce)
+            .HasForeignKey(v => v.ProduceId);
 
         builder.Entity<Inventory>()
             .HasOne(i => i.Produce)

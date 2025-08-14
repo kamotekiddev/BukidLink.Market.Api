@@ -19,16 +19,14 @@ public class ProduceService : IProduceService
 
     public async Task<ProduceDto> CreateProduceAsync(AddProduceDto dto)
     {
-        var produce = new Produce()
+        var produce = new Produce
         {
             Name = dto.Name,
             Description = dto.Description,
-            Price = dto.Price,
             PhotoUrl = dto.PhotoUrl,
         };
 
         await _produceRepository.AddProduceAsync(produce);
-
         return _mapper.Map<ProduceDto>(produce);
     }
 
@@ -52,7 +50,6 @@ public class ProduceService : IProduceService
                               throw new BadHttpRequestException("Produce does not exist.");
 
         existingProduce.Name = dto.Name;
-        existingProduce.Price = dto.Price;
         if (dto.PhotoUrl != null) existingProduce.PhotoUrl = dto.PhotoUrl;
         if (dto.Description != null) existingProduce.Description = dto.Description;
 

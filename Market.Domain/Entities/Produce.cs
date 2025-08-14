@@ -6,5 +6,6 @@ public class Produce : BaseEntity
     public required string Name { get; set; }
     public string? Description { get; set; }
     public string? PhotoUrl { get; set; }
-    public decimal Price { get; set; }
+
+    public IReadOnlyList<ProduceVariant>? Variants { get; set; }
 }
