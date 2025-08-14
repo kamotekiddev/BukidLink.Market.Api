@@ -7,5 +7,6 @@ public class Produce : BaseEntity
     public string? Description { get; set; }
     public string? PhotoUrl { get; set; }
 
-    public IReadOnlyList<ProduceVariant>? Variants { get; set; }
+    public ICollection<ProduceCategory>? Categories { get; set; }
+    public ICollection<ProduceVariant>? Variants { get; set; }
 }
