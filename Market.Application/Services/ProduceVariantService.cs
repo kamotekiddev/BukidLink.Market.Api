@@ -1,3 +1,4 @@
+using AutoMapper;
 using Market.Application.DTOs.ProduceVariant;
 using Market.Application.Interfaces;
 using Market.Domain.Entities;
@@ -7,16 +8,18 @@ namespace Market.Application.Services;
 public class ProduceVariantService : IProduceVariantService
 {
     private readonly IProduceVariantRepository _repository;
+    private readonly IMapper _mapper;
 
-    public ProduceVariantService(IProduceVariantRepository repository)
+    public ProduceVariantService(IProduceVariantRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
-    public async Task<ProduceVariant> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ProduceVariantDto> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _repository.GetByIdAsync(id, cancellationToken) ??
-               throw new KeyNotFoundException("Produce variant does not exist.");
+        var variant = await _repository.GetByIdAsync(id, cancellationToken);
+        return _mapper.Map<ProduceVariantDto>(variant);
     }
 
     public async Task<IEnumerable<ProduceVariant>> GetByProduceIdAsync(Guid produceId,
@@ -25,7 +28,8 @@ public class ProduceVariantService : IProduceVariantService
         return await _repository.GetByProduceIdAsync(produceId, cancellationToken);
     }
 
-    public async Task<ProduceVariant> AddAsync(AddProduceVariantDto dto, CancellationToken cancellationToken = default)
+    public async Task<ProduceVariantDto> AddAsync(AddProduceVariantDto dto,
+        CancellationToken cancellationToken = default)
     {
         var produceVariant = new ProduceVariant
         {
@@ -36,27 +40,23 @@ public class ProduceVariantService : IProduceVariantService
         };
 
         await _repository.AddAsync(produceVariant, cancellationToken);
-        return produceVariant;
+        return _mapper.Map<ProduceVariantDto>(produceVariant);
     }
 
-    public async Task<ProduceVariant> UpdateAsync(Guid id, UpdateProduceVariantDto dto,
+    public async Task<ProduceVariantDto> UpdateAsync(Guid id, UpdateProduceVariantDto dto,
         CancellationToken cancellationToken = default)
     {
-        var variant = await GetByIdAsync(id, cancellationToken);
-
-        variant.Price = dto.Price;
-        variant.UnitOfMeasure = dto.UnitOfMeasure;
-        variant.UniSize = dto.UniSize;
+        var variant = await _repository.GetByIdAsync(id, cancellationToken);
 
         await _repository.UpdateAsync(variant, cancellationToken);
-        return variant;
+        return _mapper.Map<ProduceVariantDto>(variant);
     }
 
-    public async Task<ProduceVariant> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ProduceVariantDto> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var variant = await GetByIdAsync(id, cancellationToken);
+        var variant = await _repository.GetByIdAsync(id, cancellationToken);
 
         await _repository.DeleteAsync(variant, cancellationToken);
-        return variant;
+        return _mapper.Map<ProduceVariantDto>(variant);
     }
 }

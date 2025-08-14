@@ -14,11 +14,15 @@ public class ProduceVariantRepository : IProduceVariantRepository
         _dbContext = dbContext;
     }
 
-    public async Task<ProduceVariant?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ProduceVariant> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.ProduceVariants
+        var variant = await _dbContext.ProduceVariants
             .Include(pv => pv.Produce)
             .FirstOrDefaultAsync(pv => pv.Id == id, cancellationToken);
+
+        if (variant is null) throw new KeyNotFoundException("Produce variant not found");
+
+        return variant;
     }
 
     public async Task<IEnumerable<ProduceVariant>> GetByProduceIdAsync(Guid produceId,

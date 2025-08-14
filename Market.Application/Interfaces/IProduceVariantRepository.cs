@@ -4,7 +4,7 @@ namespace Market.Application.Interfaces;
 
 public interface IProduceVariantRepository
 {
-    Task<ProduceVariant?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<ProduceVariant> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     Task<IEnumerable<ProduceVariant>>
         GetByProduceIdAsync(Guid produceId, CancellationToken cancellationToken = default);
