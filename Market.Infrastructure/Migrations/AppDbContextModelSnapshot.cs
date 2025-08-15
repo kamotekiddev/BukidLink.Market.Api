@@ -43,7 +43,7 @@ namespace Market.Infrastructure.Migrations
                     b.Property<DateTime>("DateReceived")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("ProduceId")
+                    b.Property<Guid>("ProduceVariantId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
@@ -61,7 +61,7 @@ namespace Market.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProduceId");
+                    b.HasIndex("ProduceVariantId");
 
                     b.ToTable("Inventory");
                 });
@@ -241,13 +241,13 @@ namespace Market.Infrastructure.Migrations
 
             modelBuilder.Entity("Market.Domain.Entities.Inventory", b =>
                 {
-                    b.HasOne("Market.Domain.Entities.Produce", "Produce")
+                    b.HasOne("Market.Domain.Entities.ProduceVariant", "ProduceVariant")
                         .WithMany()
-                        .HasForeignKey("ProduceId")
+                        .HasForeignKey("ProduceVariantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Produce");
+                    b.Navigation("ProduceVariant");
                 });
 
             modelBuilder.Entity("Market.Domain.Entities.ProduceVariant", b =>

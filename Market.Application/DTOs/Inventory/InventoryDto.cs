@@ -1,4 +1,5 @@
 using Market.Application.DTOs.Produce;
+using Market.Application.DTOs.ProduceVariant;
 using Market.Domain.Enums;
 
 namespace Market.Application.DTOs.Inventory;
@@ -14,6 +15,6 @@ public class InventoryDto
     public DateTime DateReceived { get; set; }
     public DateTime? DateExpired { get; set; }
 
-    public Guid ProduceId { get; set; }
-    public ProduceDto? Produce { get; set; }
+    public Guid ProduceVariantId { get; set; }
+    public ProduceVariantDto? ProduceVariant { get; set; }
 }

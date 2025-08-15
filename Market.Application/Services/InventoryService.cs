@@ -24,7 +24,7 @@ public class InventoryService : IInventoryService
     {
         var inventory = new Inventory
         {
-            ProduceId = dto.ProduceId,
+            ProduceVariantId = dto.ProduceVariantId,
             Quantity = dto.Quantity,
             Sku = dto.Sku,
             DateExpired = dto.DateExpired,
