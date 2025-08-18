@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Market.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/inventories")]
     [ApiController]
     public class InventoryController : ControllerBase
     {

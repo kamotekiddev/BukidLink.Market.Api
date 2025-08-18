@@ -1,8 +1,7 @@
-namespace Market.Application.DTOs.Produce;
+namespace Market.Application.DTOs.Product;
 
-public class ProduceDto
+public class AddProductDto
 {
-    public Guid Id { get; set; }
     public required string Name { get; set; }
     public string? Description { get; set; } = string.Empty;
     public string? PhotoUrl { get; set; } = string.Empty;

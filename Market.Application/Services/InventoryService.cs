@@ -11,20 +11,20 @@ public class InventoryService : IInventoryService
 {
     private readonly IInventoryRepository _repository;
     private readonly IMapper _mapper;
-    private readonly IProduceService _produceService;
+    private readonly IProductService _productService;
 
-    public InventoryService(IInventoryRepository repository, IMapper mapper, IProduceService produceService)
+    public InventoryService(IInventoryRepository repository, IMapper mapper, IProductService productService)
     {
         _repository = repository;
         _mapper = mapper;
-        _produceService = produceService;
+        _productService = productService;
     }
 
     public async Task<InventoryDto> CreateAsync(AddInventoryDto dto)
     {
         var inventory = new Inventory
         {
-            ProduceVariantId = dto.ProduceVariantId,
+            ProductVariantId = dto.ProduceVariantId,
             Quantity = dto.Quantity,
             Sku = dto.Sku,
             DateExpired = dto.DateExpired,
@@ -75,7 +75,7 @@ public class InventoryService : IInventoryService
 
     public async Task<IReadOnlyList<InventoryDto>> GetByProduceIdAsync(Guid produceId)
     {
-        var produce = await _produceService.GetProduceByIdAsync(produceId);
+        var produce = await _productService.GetProductByIdAsync(produceId);
 
         var inventories = await _repository.GetInventoryByProduceIdAsync(produce.Id);
         return _mapper.Map<IReadOnlyList<InventoryDto>>(inventories);

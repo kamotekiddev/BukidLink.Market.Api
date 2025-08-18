@@ -16,6 +16,6 @@ public class Inventory : BaseEntity
     public DateTime DateExpired { get; set; }
     public InventoryStatus Status { get; set; } = InventoryStatus.Pending;
 
-    public Guid ProduceVariantId { get; set; }
-    public ProduceVariant? ProduceVariant { get; set; }
+    public Guid ProductVariantId { get; set; }
+    public ProductVariant? ProductVariant { get; set; }
 }

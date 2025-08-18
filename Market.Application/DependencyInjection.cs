@@ -15,10 +15,10 @@ public static class DependencyInjection
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<PasswordService>();
         services.AddScoped<IRoleService, RoleService>();
-        services.AddScoped<IProduceService, ProduceService>();
+        services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IInventoryService, InventoryService>();
-        services.AddScoped<IProduceVariantService, ProduceVariantService>();
-        services.AddScoped<IProduceCategoryService, ProduceCategoryService>();
+        services.AddScoped<IProductVariantService, ProductVariantService>();
+        services.AddScoped<IProductCategoryService, ProductCategoryService>();
 
         services.AddAutoMapper(typeof(MappingProfile).Assembly);
 

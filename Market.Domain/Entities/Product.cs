@@ -1,12 +1,12 @@
 namespace Market.Domain.Entities;
 
-public class Produce : BaseEntity
+public class Product : BaseEntity
 {
     public Guid Id { get; set; }
     public required string Name { get; set; }
     public string? Description { get; set; }
     public string? PhotoUrl { get; set; }
 
-    public ICollection<ProduceCategory>? Categories { get; set; }
-    public ICollection<ProduceVariant>? Variants { get; set; }
+    public ICollection<ProductCategory>? Categories { get; set; }
+    public ICollection<ProductVariant>? Variants { get; set; }
 }

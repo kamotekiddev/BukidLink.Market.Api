@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Market.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {

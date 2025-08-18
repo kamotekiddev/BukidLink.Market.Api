@@ -1,8 +1,8 @@
 using Market.Domain.Enums;
 
-namespace Market.Application.DTOs.ProduceVariant;
+namespace Market.Application.DTOs.ProductVariant;
 
-public class UpdateProduceVariantDto
+public class UpdateProductVariantDto
 {
     public double Price { get; set; }
     public UnitOfMeasure UnitOfMeasure { get; set; }

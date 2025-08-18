@@ -5,74 +5,74 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Market.Infrastructure.Repositories
 {
-    public class ProduceCategoryRepository : IProduceCategoryRepository
+    public class ProductCategoryRepository : IProductCategoryRepository
     {
         private readonly AppDbContext _dbContext;
 
-        public ProduceCategoryRepository(AppDbContext dbContext)
+        public ProductCategoryRepository(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<ProduceCategory?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<ProductCategory?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.ProduceCategories
+            return await _dbContext.ProductCategories
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
         }
 
-        public async Task<IReadOnlyList<ProduceCategory>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<ProductCategory>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await _dbContext.ProduceCategories
+            return await _dbContext.ProductCategories
                 .AsNoTracking()
                 .OrderBy(c => c.Name)
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<IReadOnlyList<ProduceCategory>> GetByIdsAsync(IEnumerable<Guid> ids,
+        public async Task<IReadOnlyList<ProductCategory>> GetByIdsAsync(IEnumerable<Guid> ids,
             CancellationToken cancellationToken = default)
         {
-            return await _dbContext.ProduceCategories
+            return await _dbContext.ProductCategories
                 .AsNoTracking()
                 .Where(c => ids.Contains(c.Id))
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<ProduceCategory> AddAsync(ProduceCategory category,
+        public async Task<ProductCategory> AddAsync(ProductCategory category,
             CancellationToken cancellationToken = default)
         {
-            _dbContext.ProduceCategories.Add(category);
+            _dbContext.ProductCategories.Add(category);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return category;
         }
 
-        public async Task<ProduceCategory> UpdateAsync(ProduceCategory category,
+        public async Task<ProductCategory> UpdateAsync(ProductCategory category,
             CancellationToken cancellationToken = default)
         {
-            _dbContext.ProduceCategories.Update(category);
+            _dbContext.ProductCategories.Update(category);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return category;
         }
 
-        public async Task<ProduceCategory> DeleteAsync(ProduceCategory category,
+        public async Task<ProductCategory> DeleteAsync(ProductCategory category,
             CancellationToken cancellationToken = default)
         {
-            _dbContext.ProduceCategories.Remove(category);
+            _dbContext.ProductCategories.Remove(category);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return category;
         }
 
         public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return _dbContext.ProduceCategories
+            return _dbContext.ProductCategories
                 .AsNoTracking()
                 .AnyAsync(c => c.Id == id, cancellationToken);
         }
 
         public Task<bool> NameExistsAsync(string name, CancellationToken cancellationToken = default)
         {
-            return _dbContext.ProduceCategories
+            return _dbContext.ProductCategories
                 .AsNoTracking()
                 .AnyAsync(c => c.Name == name, cancellationToken);
         }
