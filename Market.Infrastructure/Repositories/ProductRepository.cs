@@ -14,26 +14,27 @@ public class ProductRepository : IProductRepository
         _dbContext = dbContext;
     }
 
-    public async Task<Product> AddProduceAsync(Product product)
+    public async Task<Product> AddProductAsync(Product product)
     {
+        _dbContext.AttachRange(product.Categories);
         _dbContext.Products.Add(product);
         await _dbContext.SaveChangesAsync();
         return product;
     }
 
-    public async Task<Product> UpdateProduceAsync(Product product)
+    public async Task<Product> UpdateProductAsync(Product product)
     {
         _dbContext.Products.Update(product);
         await _dbContext.SaveChangesAsync();
         return product;
     }
 
-    public ValueTask<Product?> GetProduceByIdAsync(Guid produceId)
+    public ValueTask<Product?> GetProductByIdAsync(Guid produceId)
     {
         return _dbContext.Products.FindAsync(produceId);
     }
 
-    public async Task<Product> DeleteProduceByIdAsync(Product product)
+    public async Task<Product> DeleteProductByIdAsync(Product product)
     {
         _dbContext.Products.Remove(product);
         await _dbContext.SaveChangesAsync();
@@ -41,7 +42,7 @@ public class ProductRepository : IProductRepository
         return product;
     }
 
-    public async Task<List<Product>> GetAllProduceAsync()
+    public async Task<List<Product>> GetAllProductsAsync()
     {
         return await _dbContext.Products.ToListAsync();
     }

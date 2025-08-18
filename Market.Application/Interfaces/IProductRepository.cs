@@ -4,10 +4,10 @@ namespace Market.Application.Interfaces;
 
 public interface IProductRepository
 {
-    Task<Product> AddProduceAsync(Product product);
-    Task<Product> UpdateProduceAsync(Product product);
-    ValueTask<Product?> GetProduceByIdAsync(Guid produceId);
-    Task<Product> DeleteProduceByIdAsync(Product product);
-    Task<List<Product>> GetAllProduceAsync();
+    Task<Product> AddProductAsync(Product product);
+    Task<Product> UpdateProductAsync(Product product);
+    ValueTask<Product?> GetProductByIdAsync(Guid produceId);
+    Task<Product> DeleteProductByIdAsync(Product product);
+    Task<List<Product>> GetAllProductsAsync();
     Task<List<Product>> GetByCategoryIdAsync(Guid categoryId);
 }
