@@ -5,9 +5,9 @@ namespace Market.Application.Interfaces
     public interface IProductCategoryRepository
     {
         Task<ProductCategory?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-        Task<IReadOnlyList<ProductCategory>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<ICollection<ProductCategory>> GetAllAsync(CancellationToken cancellationToken = default);
 
-        Task<IReadOnlyList<ProductCategory>> GetByIdsAsync(IEnumerable<Guid> ids,
+        Task<ICollection<ProductCategory>> GetByIdsAsync(IEnumerable<Guid> ids,
             CancellationToken cancellationToken = default);
 
         Task<ProductCategory> AddAsync(ProductCategory category, CancellationToken cancellationToken = default);

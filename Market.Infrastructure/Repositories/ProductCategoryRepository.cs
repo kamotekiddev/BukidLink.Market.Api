@@ -21,7 +21,7 @@ namespace Market.Infrastructure.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
         }
 
-        public async Task<IReadOnlyList<ProductCategory>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<ICollection<ProductCategory>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _dbContext.ProductCategories
                 .AsNoTracking()
@@ -29,7 +29,7 @@ namespace Market.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<IReadOnlyList<ProductCategory>> GetByIdsAsync(IEnumerable<Guid> ids,
+        public async Task<ICollection<ProductCategory>> GetByIdsAsync(IEnumerable<Guid> ids,
             CancellationToken cancellationToken = default)
         {
             return await _dbContext.ProductCategories
