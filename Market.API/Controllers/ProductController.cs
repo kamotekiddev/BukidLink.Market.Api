@@ -16,7 +16,7 @@ namespace Market.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProducers()
+        public async Task<IActionResult> GetAllProducts()
         {
             var products = await _productService.GetAllProductsAsync();
             return Ok(products);
@@ -27,6 +27,13 @@ namespace Market.API.Controllers
         {
             var product = await _productService.GetProductByIdAsync(productId);
             return Ok(product);
+        }
+
+        [HttpGet("category/{categoryId}")]
+        public async Task<IActionResult> GetByCategoryId([FromRoute] Guid categoryId)
+        {
+            var products = await _productService.GetProductsByCategoryIdAsync(categoryId);
+            return Ok(products);
         }
 
         [HttpPost]

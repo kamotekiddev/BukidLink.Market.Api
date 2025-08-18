@@ -45,4 +45,11 @@ public class ProductRepository : IProductRepository
     {
         return await _dbContext.Products.ToListAsync();
     }
+
+    public async Task<List<Product>> GetByCategoryIdAsync(Guid categoryId)
+    {
+        return await _dbContext.Products
+            .Where(p => p.Categories.Any(c => c.Id == categoryId))
+            .ToListAsync();
+    }
 }

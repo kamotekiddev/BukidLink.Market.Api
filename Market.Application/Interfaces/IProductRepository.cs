@@ -9,4 +9,5 @@ public interface IProductRepository
     ValueTask<Product?> GetProduceByIdAsync(Guid produceId);
     Task<Product> DeleteProduceByIdAsync(Product product);
     Task<List<Product>> GetAllProduceAsync();
+    Task<List<Product>> GetByCategoryIdAsync(Guid categoryId);
 }

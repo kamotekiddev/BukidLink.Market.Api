@@ -19,52 +19,58 @@ public class ProductService : IProductService
 
     public async Task<ProductDto> CreateProductAsync(AddProductDto dto)
     {
-        var produce = new Product
+        var product = new Product
         {
             Name = dto.Name,
             Description = dto.Description,
             PhotoUrl = dto.PhotoUrl,
         };
 
-        await _productRepository.AddProduceAsync(produce);
-        return _mapper.Map<ProductDto>(produce);
+        await _productRepository.AddProduceAsync(product);
+        return _mapper.Map<ProductDto>(product);
     }
 
     public async Task<List<ProductDto>> GetAllProductsAsync()
     {
-        var produce = await _productRepository.GetAllProduceAsync();
-        return _mapper.Map<List<ProductDto>>(produce);
+        var products = await _productRepository.GetAllProduceAsync();
+        return _mapper.Map<List<ProductDto>>(products);
     }
 
-    public async Task<ProductDto> GetProductByIdAsync(Guid produceId)
+    public async Task<ProductDto> GetProductByIdAsync(Guid productId)
     {
-        var produce = await _productRepository.GetProduceByIdAsync(produceId) ??
-                      throw new BadHttpRequestException($"produce with id:{produceId} not found.");
+        var product = await _productRepository.GetProduceByIdAsync(productId) ??
+                      throw new BadHttpRequestException($"produce with id:{productId} not found.");
 
-        return _mapper.Map<ProductDto>(produce);
+        return _mapper.Map<ProductDto>(product);
     }
 
-    public async Task<ProductDto> UpdateProductAsync(Guid produceId, UpdateProductDto dto)
+    public async Task<ProductDto> UpdateProductAsync(Guid productId, UpdateProductDto dto)
     {
-        var existingProduce = await _productRepository.GetProduceByIdAsync(produceId) ??
-                              throw new BadHttpRequestException("Produce does not exist.");
+        var product = await _productRepository.GetProduceByIdAsync(productId) ??
+                      throw new BadHttpRequestException("Produce does not exist.");
 
-        existingProduce.Name = dto.Name;
-        if (dto.PhotoUrl != null) existingProduce.PhotoUrl = dto.PhotoUrl;
-        if (dto.Description != null) existingProduce.Description = dto.Description;
+        product.Name = dto.Name;
+        if (dto.PhotoUrl != null) product.PhotoUrl = dto.PhotoUrl;
+        if (dto.Description != null) product.Description = dto.Description;
 
-        await _productRepository.UpdateProduceAsync(existingProduce);
+        await _productRepository.UpdateProduceAsync(product);
 
-        return _mapper.Map<ProductDto>(existingProduce);
+        return _mapper.Map<ProductDto>(product);
     }
 
-    public async Task<ProductDto> DeleteProductByIdAsync(Guid produceId)
+    public async Task<ProductDto> DeleteProductByIdAsync(Guid productId)
     {
-        var existingProduce = await _productRepository.GetProduceByIdAsync(produceId) ??
-                              throw new BadHttpRequestException("Produce does not exist.");
+        var product = await _productRepository.GetProduceByIdAsync(productId) ??
+                      throw new BadHttpRequestException("Produce does not exist.");
 
-        await _productRepository.DeleteProduceByIdAsync(existingProduce);
+        await _productRepository.DeleteProduceByIdAsync(product);
 
-        return _mapper.Map<ProductDto>(existingProduce);
+        return _mapper.Map<ProductDto>(product);
+    }
+
+    public async Task<List<ProductDto>> GetProductsByCategoryIdAsync(Guid categoryId)
+    {
+        var products = await _productRepository.GetByCategoryIdAsync(categoryId);
+        return _mapper.Map<List<ProductDto>>(products);
     }
 }
