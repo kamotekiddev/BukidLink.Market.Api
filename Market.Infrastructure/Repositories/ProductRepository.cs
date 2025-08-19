@@ -24,14 +24,16 @@ public class ProductRepository : IProductRepository
 
     public async Task<Product> UpdateProductAsync(Product product)
     {
-        _dbContext.Products.Update(product);
         await _dbContext.SaveChangesAsync();
         return product;
     }
 
-    public ValueTask<Product?> GetProductByIdAsync(Guid produceId)
+    public async ValueTask<Product?> GetProductByIdAsync(Guid produceId)
     {
-        return _dbContext.Products.FindAsync(produceId);
+        return await _dbContext.Products
+            .Include(p => p.Categories)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Id == produceId);
     }
 
     public async Task<Product> DeleteProductByIdAsync(Product product)
