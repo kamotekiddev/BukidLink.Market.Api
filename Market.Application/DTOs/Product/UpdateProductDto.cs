@@ -2,7 +2,9 @@ namespace Market.Application.DTOs.Product;
 
 public class UpdateProductDto
 {
-    public required string Name { get; set; }
-    public string? Description { get; set; } = string.Empty;
-    public string? PhotoUrl { get; set; } = string.Empty;
+    public string? Name { get; set; }
+    public string? Description { get; set; }
+    public string? PhotoUrl { get; set; }
+
+    public IEnumerable<Guid> CategoryIds { get; set; } = new List<Guid>();
 }
