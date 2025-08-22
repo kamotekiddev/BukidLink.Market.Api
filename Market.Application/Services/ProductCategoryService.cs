@@ -1,3 +1,4 @@
+using AutoMapper;
 using Market.Application.DTOs.ProductCategory;
 using Market.Application.Interfaces;
 using Market.Domain.Entities;
@@ -8,10 +9,12 @@ namespace Market.Application.Services;
 public class ProductCategoryService : IProductCategoryService
 {
     private readonly IProductCategoryRepository _repository;
+    private readonly IMapper _mapper;
 
-    public ProductCategoryService(IProductCategoryRepository repository)
+    public ProductCategoryService(IProductCategoryRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     public async Task<ProductCategory> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -21,12 +24,13 @@ public class ProductCategoryService : IProductCategoryService
         return category;
     }
 
-    public async Task<ICollection<ProductCategory>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<ICollection<ProductCategoryDto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _repository.GetAllAsync(cancellationToken);
+        var categories = await _repository.GetAllAsync(cancellationToken);
+        return _mapper.Map<List<ProductCategoryDto>>(categories);
     }
 
-    public async Task<ProductCategory> AddAsync(AddProductCategoryDto dto,
+    public async Task<ProductCategoryDto> AddAsync(AddProductCategoryDto dto,
         CancellationToken cancellationToken = default)
     {
         var nameExists = await _repository.NameExistsAsync(dto.Name, cancellationToken);
@@ -37,22 +41,24 @@ public class ProductCategoryService : IProductCategoryService
             Name = dto.Name
         };
 
-        return await _repository.AddAsync(category, cancellationToken);
+        await _repository.AddAsync(category, cancellationToken);
+        return _mapper.Map<ProductCategoryDto>(category);
     }
 
-    public async Task<ProductCategory> UpdateAsync(Guid id, UpdateProductCategoryDto dto,
+    public async Task<ProductCategoryDto> UpdateAsync(Guid id, UpdateProductCategoryDto dto,
         CancellationToken cancellationToken = default)
     {
         var category = await GetByIdAsync(id, cancellationToken);
         category.Name = dto.Name;
 
-        return await _repository.UpdateAsync(category, cancellationToken);
+        await _repository.UpdateAsync(category, cancellationToken);
+        return _mapper.Map<ProductCategoryDto>(category);
     }
 
-    public async Task<ProductCategory> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ProductCategoryDto> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var category = await GetByIdAsync(id, cancellationToken);
         await _repository.DeleteAsync(category, cancellationToken);
-        return category;
+        return _mapper.Map<ProductCategoryDto>(category);
     }
 }
