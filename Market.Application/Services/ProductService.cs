@@ -4,105 +4,122 @@ using Market.Application.Interfaces;
 using Market.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 
-namespace Market.Application.Services;
-
-public class ProductService : IProductService
+namespace Market.Application.Services
 {
-    private readonly IProductRepository _productRepository;
-    private readonly IProductCategoryRepository _productCategoryRepository;
-    private readonly IMapper _mapper;
-
-    public ProductService(IProductRepository productRepository, IMapper mapper,
-        IProductCategoryRepository productCategoryRepository)
+    public class ProductService : IProductService
     {
-        _productRepository = productRepository;
-        _mapper = mapper;
-        _productCategoryRepository = productCategoryRepository;
-    }
+        private readonly IProductRepository _productRepository;
+        private readonly IProductCategoryRepository _productCategoryRepository;
+        private readonly IMapper _mapper;
 
-    public async Task<ProductDto> CreateProductAsync(AddProductDto dto)
-    {
-        var categoryIds = dto.CategoryIds.Where(id => id != Guid.Empty).Distinct().ToList();
-        var categories = await _productCategoryRepository.GetByIdsAsync(categoryIds);
-
-
-        if (categories.Count != categoryIds.Count)
+        public ProductService(IProductRepository productRepository, IMapper mapper,
+            IProductCategoryRepository productCategoryRepository)
         {
-            var foundIds = new HashSet<Guid>(categories.Select(c => c.Id));
-            var missing = categoryIds.Where(id => !foundIds.Contains(id)).ToList();
-            throw new BadHttpRequestException($"One or more category IDs were not found: {string.Join(", ", missing)}");
+            _productRepository = productRepository;
+            _mapper = mapper;
+            _productCategoryRepository = productCategoryRepository;
         }
 
-        var product = new Product
+        public async Task<ProductDto> CreateProductAsync(AddProductDto dto)
         {
-            Name = dto.Name,
-            Description = dto.Description,
-            PhotoUrl = dto.PhotoUrl,
-            Categories = categories,
-        };
+            var categoryIds = dto.CategoryIds.Where(id => id != Guid.Empty).Distinct().ToList();
+            var categories = await _productCategoryRepository.GetByIdsAsync(categoryIds);
 
-        await _productRepository.AddProductAsync(product);
-        return _mapper.Map<ProductDto>(product);
-    }
 
-    public async Task<List<ProductDto>> GetAllProductsAsync()
-    {
-        var products = await _productRepository.GetAllProductsAsync();
-        return _mapper.Map<List<ProductDto>>(products);
-    }
+            if (categories.Count != categoryIds.Count)
+            {
+                var foundIds = new HashSet<Guid>(categories.Select(c => c.Id));
+                var missing = categoryIds.Where(id => !foundIds.Contains(id)).ToList();
+                throw new BadHttpRequestException(
+                    $"One or more category IDs were not found: {string.Join(", ", missing)}");
+            }
 
-    public async Task<ProductDto> GetProductByIdAsync(Guid productId)
-    {
-        var product = await _productRepository.GetProductByIdAsync(productId) ??
-                      throw new BadHttpRequestException($"produce with id:{productId} not found.");
+            var product = new Product
+            {
+                Name = dto.Name,
+                Description = dto.Description,
+                PhotoUrl = dto.PhotoUrl,
+                Categories = categories,
+            };
 
-        return _mapper.Map<ProductDto>(product);
-    }
-
-    public async Task<ProductDto> UpdateProductAsync(Guid productId, UpdateProductDto dto)
-    {
-        var product = await _productRepository.GetProductByIdAsync(productId) ??
-                      throw new BadHttpRequestException("Produce does not exist.");
-
-        var categoryIds = dto.CategoryIds
-            .Where(id => id != Guid.Empty)
-            .Distinct()
-            .ToHashSet();
-
-        var categories = await _productCategoryRepository.GetByIdsAsync(categoryIds);
-
-        if (categories.Count != categoryIds.Count)
-        {
-            var foundIds = new HashSet<Guid>(categories.Select(c => c.Id));
-            var missing = categoryIds.Where(id => !foundIds.Contains(id)).ToList();
-            throw new BadHttpRequestException($"One or more category IDs were not found: {string.Join(", ", missing)}");
+            await _productRepository.AddProductAsync(product);
+            return _mapper.Map<ProductDto>(product);
         }
 
-        product.Categories.Clear();
-        product.Categories = categories;
+        public async Task<List<ProductDto>> GetAllProductsAsync()
+        {
+            var products = await _productRepository.GetAllProductsAsync();
+            return _mapper.Map<List<ProductDto>>(products);
+        }
 
-        if (!string.IsNullOrWhiteSpace((dto.Name)))
-            product.Name = dto.Name;
-        if (!string.IsNullOrWhiteSpace(dto.PhotoUrl)) product.PhotoUrl = dto.PhotoUrl;
-        if (!string.IsNullOrWhiteSpace(dto.Description)) product.Description = dto.Description;
+        public async Task<ProductDto> GetProductByIdAsync(Guid productId)
+        {
+            var product = await _productRepository.GetProductByIdAsync(productId) ??
+                          throw new BadHttpRequestException($"produce with id:{productId} not found.");
+
+            return _mapper.Map<ProductDto>(product);
+        }
+
+        public async Task<ProductDto> UpdateProductAsync(Guid productId, UpdateProductDto dto)
+        {
+            var product = await _productRepository.GetProductByIdAsync(productId) ??
+                          throw new BadHttpRequestException("Produce does not exist.");
+
+            var categoryIds = dto.CategoryIds
+                .Where(id => id != Guid.Empty)
+                .Distinct()
+                .ToHashSet();
+
+            var categories = await _productCategoryRepository.GetByIdsAsync(categoryIds);
+
+            if (categories.Count != categoryIds.Count)
+            {
+                var foundIds = new HashSet<Guid>(categories.Select(c => c.Id));
+                var missing = categoryIds.Where(id => !foundIds.Contains(id)).ToList();
+                throw new BadHttpRequestException(
+                    $"One or more category IDs were not found: {string.Join(", ", missing)}");
+            }
+
+            product.Categories.Clear();
+            product.Categories = categories;
+
+            if (!string.IsNullOrWhiteSpace((dto.Name)))
+                product.Name = dto.Name;
+            if (!string.IsNullOrWhiteSpace(dto.PhotoUrl)) product.PhotoUrl = dto.PhotoUrl;
+            if (!string.IsNullOrWhiteSpace(dto.Description)) product.Description = dto.Description;
 
 
-        await _productRepository.UpdateProductAsync(product);
-        return _mapper.Map<ProductDto>(product);
-    }
+            await _productRepository.UpdateProductAsync(product);
+            return _mapper.Map<ProductDto>(product);
+        }
 
-    public async Task<ProductDto> DeleteProductByIdAsync(Guid productId)
-    {
-        var product = await _productRepository.GetProductByIdAsync(productId) ??
-                      throw new BadHttpRequestException("Produce does not exist.");
+        public async Task<ProductDto> DeleteProductByIdAsync(Guid productId)
+        {
+            var product = await _productRepository.GetProductByIdAsync(productId) ??
+                          throw new BadHttpRequestException("Produce does not exist.");
 
-        await _productRepository.DeleteProductByIdAsync(product);
-        return _mapper.Map<ProductDto>(product);
-    }
+            await _productRepository.DeleteProductByIdAsync(product);
+            return _mapper.Map<ProductDto>(product);
+        }
 
-    public async Task<List<ProductDto>> GetProductsByCategoryIdAsync(Guid categoryId)
-    {
-        var products = await _productRepository.GetByCategoryIdAsync(categoryId);
-        return _mapper.Map<List<ProductDto>>(products);
+        public async Task<List<ProductDto>> GetProductsByCategoryIdAsync(Guid categoryId)
+        {
+            var products = await _productRepository.GetByCategoryIdAsync(categoryId);
+            return _mapper.Map<List<ProductDto>>(products);
+        }
+
+        public async Task<List<ProductDto>> SearchProductsAsync(Guid? categoryId, string? searchTerm)
+        {
+            var products = categoryId.HasValue
+                ? await GetProductsByCategoryIdAsync(categoryId.Value)
+                : await GetAllProductsAsync();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+                products = products
+                    .Where(p => (p.Name.Contains(searchTerm.Trim(), StringComparison.OrdinalIgnoreCase)))
+                    .ToList();
+
+            return products;
+        }
     }
 }

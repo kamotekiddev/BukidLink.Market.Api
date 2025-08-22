@@ -16,11 +16,20 @@ namespace Market.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts([FromQuery] Guid? categoryId, [FromQuery] string? search)
         {
-            var products = await _productService.GetAllProductsAsync();
+            var searchTerm = string.IsNullOrWhiteSpace(search) ? null : search.Trim();
+            List<ProductDto> products;
+
+
+            if (categoryId.HasValue || searchTerm is not null)
+                products = await _productService.SearchProductsAsync(categoryId, searchTerm);
+            else
+                products = await _productService.GetAllProductsAsync();
+
             return Ok(products);
         }
+
 
         [HttpGet("{productId:guid}")]
         public async Task<IActionResult> GetProduceById([FromRoute] Guid productId)
