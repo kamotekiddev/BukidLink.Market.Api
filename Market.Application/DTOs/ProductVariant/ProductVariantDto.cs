@@ -3,14 +3,16 @@ using Market.Domain.Enums;
 
 namespace Market.Application.DTOs.ProductVariant;
 
-public class ProductVariantDto
+public class BaseProductVariantDto
 {
     public Guid Id { get; set; }
-    public Guid ProduceId { get; set; }
-
+    public Guid ProductId { get; set; }
     public double Price { get; set; }
     public UnitOfMeasure UnitOfMeasure { get; set; }
     public int UniSize { get; set; }
+}
 
-    public ProductDto? Produce { get; set; }
+public class ProductVariantDto : BaseProductVariantDto
+{
+    public ProductDto? Product { get; set; }
 }

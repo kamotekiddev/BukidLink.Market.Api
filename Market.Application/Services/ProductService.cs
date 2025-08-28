@@ -46,10 +46,10 @@ namespace Market.Application.Services
             return _mapper.Map<ProductDto>(product);
         }
 
-        public async Task<List<ProductDto>> GetAllProductsAsync()
+        public async Task<List<ProductListItemDto>> GetAllProductsAsync()
         {
-            var products = await _productRepository.GetAllProductsAsync();
-            return _mapper.Map<List<ProductDto>>(products);
+            var products = await _productRepository.GetAllWithVariantsAsync();
+            return _mapper.Map<List<ProductListItemDto>>(products);
         }
 
         public async Task<ProductDto> GetProductByIdAsync(Guid productId)
@@ -102,13 +102,13 @@ namespace Market.Application.Services
             return _mapper.Map<ProductDto>(product);
         }
 
-        public async Task<List<ProductDto>> GetProductsByCategoryIdAsync(Guid categoryId)
+        public async Task<List<ProductListItemDto>> GetProductsByCategoryIdAsync(Guid categoryId)
         {
             var products = await _productRepository.GetByCategoryIdAsync(categoryId);
-            return _mapper.Map<List<ProductDto>>(products);
+            return _mapper.Map<List<ProductListItemDto>>(products);
         }
 
-        public async Task<List<ProductDto>> SearchProductsAsync(Guid? categoryId, string? searchTerm)
+        public async Task<List<ProductListItemDto>> SearchProductsAsync(Guid? categoryId, string? searchTerm)
         {
             var products = categoryId.HasValue
                 ? await GetProductsByCategoryIdAsync(categoryId.Value)

@@ -49,9 +49,15 @@ public class ProductRepository : IProductRepository
         return await _dbContext.Products.ToListAsync();
     }
 
+    public async Task<List<Product>> GetAllWithVariantsAsync()
+    {
+        return await _dbContext.Products.Include(p => p.Variants).ToListAsync();
+    }
+
     public async Task<List<Product>> GetByCategoryIdAsync(Guid categoryId)
     {
         return await _dbContext.Products
+            .Include(p => p.Variants)
             .Where(p => p.Categories.Any(c => c.Id == categoryId))
             .ToListAsync();
     }

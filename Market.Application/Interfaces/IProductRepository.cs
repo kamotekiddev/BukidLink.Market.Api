@@ -9,5 +9,6 @@ public interface IProductRepository
     ValueTask<Product?> GetProductByIdAsync(Guid produceId);
     Task<Product> DeleteProductByIdAsync(Product product);
     Task<List<Product>> GetAllProductsAsync();
+    Task<List<Product>> GetAllWithVariantsAsync();
     Task<List<Product>> GetByCategoryIdAsync(Guid categoryId);
 }
