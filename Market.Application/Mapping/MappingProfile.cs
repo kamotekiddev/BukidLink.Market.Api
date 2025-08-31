@@ -26,7 +26,7 @@ public class MappingProfile : Profile
                     : Array.Empty<decimal>()));
 
         CreateMap<Inventory, InventoryDto>().ReverseMap();
-        CreateMap<ProductVariant, BaseProductVariantDto>().ReverseMap();
+        CreateMap<ProductVariant, ProductVariantBaseDto>().ReverseMap();
         CreateMap<ProductVariant, ProductVariantDto>().ReverseMap();
         CreateMap<ProductCategory, ProductCategoryDto>().ReverseMap();
     }
