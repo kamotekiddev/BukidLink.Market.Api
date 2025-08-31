@@ -33,7 +33,6 @@ namespace Market.Infrastructure.Repositories
             CancellationToken cancellationToken = default)
         {
             return await _dbContext.ProductCategories
-                .AsNoTracking()
                 .Where(c => ids.Contains(c.Id))
                 .ToListAsync(cancellationToken);
         }
