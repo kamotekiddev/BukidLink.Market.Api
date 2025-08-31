@@ -13,7 +13,16 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<User, UserDto>().ReverseMap();
-        CreateMap<Product, ProductDto>().ReverseMap();
+        CreateMap<Product, ProductDto>()
+            .ForMember(d => d.PriceRange, opt => opt.MapFrom(src =>
+                (src.Variants != null && src.Variants.Any())
+                    ? new[]
+                    {
+                        (decimal)src.Variants.Min(v => v.Price),
+                        (decimal)src.Variants.Max(v => v.Price)
+                    }
+                    : Array.Empty<decimal>()))
+            .ReverseMap();
 
         CreateMap<Product, ProductListItemDto>()
             .ForMember(d => d.PriceRange, opt => opt.MapFrom(src =>

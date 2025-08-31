@@ -5,6 +5,8 @@ namespace Market.Application.DTOs.Product;
 
 public class ProductDto : ProductBaseDto
 {
+    public decimal[] PriceRange { get; set; } = [0, 0];
+
     public IEnumerable<ProductVariantBaseDto> Variants { get; set; } =
         new List<ProductVariantDto>();
 
